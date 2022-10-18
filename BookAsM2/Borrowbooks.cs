@@ -45,5 +45,17 @@ namespace BookAsM2
                     int.Parse(dateInput[0]));
             }
         }
+
+        public override string ToString()
+        {
+            return $"BorrowID: {BorrowId},IssueDate: {IssueDate.ToString("dd/MM/yyyy")}," +
+                   $"Due date: {DueDate.ToString("dd/MM/yy")}, Return date: Not Yet";
+        }
+
+        public void ShowTimLine()
+        {
+            Console.WriteLine($"Borrow Id: {BorrowId},IssueDate: {IssueDate.ToString("dd/MM/yyyy")}" +
+                              $" Due date: {DueDate.ToString("dd/MM/yyyy")}, Return date: {ReturnDateTime.ToString("dd/MM/yyyy")}");
+        }
     }
 }
