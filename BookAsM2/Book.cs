@@ -34,7 +34,7 @@ namespace BookAsM2
                    $" Author: {Author}, Category: {Category}, Quantity: {Quantity}";
         }
 
-        public void ShowBook()
+        public void ShowBookBorrow()
         {
             Console.WriteLine($"Book : Id {BoookId}, Title: {Title}" +
                               $", Author: {Author}, Category: {Category}");
