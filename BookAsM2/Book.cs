@@ -1,6 +1,4 @@
 using System;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
 
 namespace BookAsM2
 {
@@ -38,7 +36,8 @@ namespace BookAsM2
 
         public void ShowBook()
         {
-            Console.WriteLine($"Book : Id {BoookId}, Title: {Title}, Author: {Author}, Category: {Category}");
+            Console.WriteLine($"Book : Id {BoookId}, Title: {Title}" +
+                              $", Author: {Author}, Category: {Category}");
         }
     }
 }
