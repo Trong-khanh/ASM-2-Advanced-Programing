@@ -108,16 +108,16 @@ namespace BookAsM2
         
         private bool IsBookExisted(int idToCheck)
         {
-            var bookInList = Books.FirstOrDefault(b => b.BookId == idToCheck);
-            if (bookInList == null)
+            var studentInList = StudentBorrowers.FirstOrDefault(b => b.StudentId.Equals(idToCheck));
+            if (studentInList == null)
                 return false;
             return true;
         }
         
-        private bool IsStudentExisted(string idToCheck)
+        private bool IsStudentExisted(int idToCheck)
         {
-            var studentInList = StudentBorrowers.FirstOrDefault(b => b.StudentId.Equals(idToCheck));
-            if (studentInList == null)
+            var bookInList = Books.FirstOrDefault(b => b.BookId == idToCheck);
+            if (bookInList == null)
                 return false;
             return true;
         }

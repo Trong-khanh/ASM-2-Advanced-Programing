@@ -7,6 +7,7 @@ namespace BookAsM2
     public class Student : Person
     {
         public List<BookBorrow> BookLoans = new List<BookBorrow>();
+        public string StudentId { get; set; }
 
         public override void InputInfo()
         {
