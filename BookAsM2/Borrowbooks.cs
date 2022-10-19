@@ -57,8 +57,12 @@ namespace BookAsM2
 
         public void ShowTimLine()
         {
-            Console.WriteLine($"Borrow Id: {BorrowId},IssueDate: {IssueDate.ToString("dd/MM/yyyy")}" +
-                              $" Due date: {DueDate.ToString("dd/MM/yyyy")}, Return date: {ReturnDateTime.ToString("dd/MM/yyyy")}");
+            if (ReturnDateTime == DateTime.MinValue)
+                Console.WriteLine($"Borrow Id: {BorrowId}, IssueDate: {IssueDate.ToString("dd/MM/yyyy")}" +
+                                  $" Due Date: {DueDate.ToString("dd/MM/yyyy")}, Return date: Not Yet");
+            else
+                Console.WriteLine($"Borrow Id: {BorrowId},IssueDate: {IssueDate.ToString("dd/MM/yyyy")}" +
+                                  $" Due date: {DueDate.ToString("dd/MM/yyyy")}, Return date: {ReturnDateTime.ToString("dd/MM/yyyy")}");
         }
     }
 }

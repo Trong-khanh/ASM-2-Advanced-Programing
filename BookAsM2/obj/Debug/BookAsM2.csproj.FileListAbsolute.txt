@@ -1,0 +1,6 @@
+/home/khanh/RiderProjects/BookAsM2/BookAsM2/bin/Debug/BookAsM2.exe
+/home/khanh/RiderProjects/BookAsM2/BookAsM2/bin/Debug/BookAsM2.pdb
+/home/khanh/RiderProjects/BookAsM2/BookAsM2/obj/Debug/BookAsM2.csproj.AssemblyReference.cache
+/home/khanh/RiderProjects/BookAsM2/BookAsM2/obj/Debug/BookAsM2.csproj.CoreCompileInputs.cache
+/home/khanh/RiderProjects/BookAsM2/BookAsM2/obj/Debug/BookAsM2.exe
+/home/khanh/RiderProjects/BookAsM2/BookAsM2/obj/Debug/BookAsM2.pdb

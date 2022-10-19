@@ -6,16 +6,17 @@ namespace BookAsM2
 {
     public class Library
     {
+        public string LibraryName { get; set; }
         public List<Book> Books = new List<Book>();
         public List<Borrowbooks> BorrowbooksList = new List<Borrowbooks>();
-        public List<Student> Students = new List<Student>();
+        public List<Student> StudentsBorrows = new List<Student>();
 
         public Library(string libraryName)
         {
             LibraryName = libraryName;
         }
 
-        public string LibraryName { get; set; }
+
 
         //display menus of library.
         public void ShowMenu()
@@ -53,6 +54,57 @@ namespace BookAsM2
             {
                 Console.WriteLine("Error" + ex.Message);
             }
+        }
+
+        public void ShowListBook()
+        {
+            if (Books.Any())
+            {
+                Console.WriteLine("List books is available: ");
+                foreach (Book book in Books)
+                    Console.WriteLine((book.ToString()));
+            }
+            else
+                Console.WriteLine("There are no books available.");
+        }
+
+        public void ShowBookList(List<Book> books)
+        {
+            foreach (Book book in books)
+            {
+                Console.WriteLine(book.ToString());
+            }
+        }
+
+        //check the existence of a book and a student in its list.
+        private bool IsBookExistend(int checkId)
+        {
+            Book bookInlist = Books.FirstOrDefault(b => b.BoookId == checkId);
+            if (bookInlist == null)
+                return false;
+            return true;
+        }
+
+        private bool IsStudentExistend(string checkId)
+        {
+            Student studentInList = StudentsBorrows.FirstOrDefault
+                (b => b.StudentId.Equals(checkId));
+            if (studentInList == null)
+                return false;
+            return true;
+        }
+
+        //update or delete information of book
+        private void UpdateBook(Book bookToUpdate)
+        {
+            bookToUpdate.InputInformation();
+            Console.WriteLine("Update successfully");
+        }
+
+        private void DeleteBook(Book bookToDelete)
+        {
+            Books.Remove(bookToDelete);
+            Console.WriteLine("Delete successfully");
         }
     }
 }
