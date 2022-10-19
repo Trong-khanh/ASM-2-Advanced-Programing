@@ -6,105 +6,162 @@ namespace BookAsM2
 {
     public class Library
     {
-        public string LibraryName { get; set; }
+        public List<BookBorrow> BookLoans = new List<BookBorrow>();
         public List<Book> Books = new List<Book>();
-        public List<Borrowbooks> BorrowbooksList = new List<Borrowbooks>();
-        public List<Student> StudentsBorrows = new List<Student>();
+        public List<Student> StudentBorrowers = new List<Student>();
 
         public Library(string libraryName)
         {
             LibraryName = libraryName;
         }
 
+        public string LibraryName { get; set; }
 
-
-        //display menus of library.
-        public void ShowMenu()
+        public void Hello()
         {
-            Console.WriteLine("1. View current book list ");
-            Console.WriteLine("2. Add a new book title.");
-            Console.WriteLine("3. Search book by title.");
-            Console.WriteLine("4. Update/delete a book name  by id. ");
-            Console.WriteLine("5. Lend a book to student.");
-            Console.WriteLine("6. Receive a borrowed book from a student.");
-            Console.WriteLine("7. Update information borrowers");
-            Console.WriteLine("8. View list of book borrows");
-            Console.WriteLine("9. Find student who borrows books the most often ");
-            Console.WriteLine("10. exit the program ");
-            Console.WriteLine("Enter your choose");
+            Console.WriteLine("----------------------------------------------");
+            Console.WriteLine($"WELCOME TO {LibraryName.ToUpper()} LIBRARY!!!");
+            Console.WriteLine("----------------------------------------------");
         }
 
-        public void addBook()
+        public void ShowMenu()
+        {
+            Console.WriteLine("1. View current book list.");
+            Console.WriteLine("2. Add a new book title.");
+            Console.WriteLine("3. Search books by title.");
+            Console.WriteLine("4. Update/Delete a book title by ID.");
+            Console.WriteLine("5. Lend a book to a student.");
+            Console.WriteLine("6. Receive a borrowed book from a student.");
+            Console.WriteLine("7. Update information of student borrowers.");
+            Console.WriteLine("8. View list of book loans.");
+            Console.WriteLine("9. Find the student who borrows books the most often.");
+            Console.WriteLine("10. Exit the program.");
+            Console.Write("Enter your option: ");
+        }
+
+        public void AddBook()
         {
             try
             {
                 var newBook = new Book();
                 if (Books.Any())
-                    newBook.BoookId = Books.Last().BoookId + 1;
-                else newBook.BoookId = 1;
-                newBook.InputInformation();
+                    newBook.BookId = Books.Last().BookId + 1;
+                else newBook.BookId = 1;
+                newBook.InputInfo();
                 Books.Add(newBook);
-                Console.WriteLine("Add successfully!!");
+                Console.WriteLine("Added successfully!");
+                Console.WriteLine("---------------------------");
             }
             catch (FormatException ex)
             {
-                Console.WriteLine("Please enter number .\n" + ex.Message);
+                Console.WriteLine("Please enter a number.\n" + ex.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error" + ex.Message);
+                Console.WriteLine("Error " + ex.Message);
             }
         }
 
-        public void ShowListBook()
+        public void ShowBookList()
         {
             if (Books.Any())
             {
-                Console.WriteLine("List books is available: ");
-                foreach (Book book in Books)
-                    Console.WriteLine((book.ToString()));
+                Console.WriteLine("List of books available:");
+                foreach (var book in Books)
+                    Console.WriteLine(book.ToString());
             }
             else
+            {
                 Console.WriteLine("There are no books available.");
+            }
+
+            Console.WriteLine("***********************************");
         }
 
         public void ShowBookList(List<Book> books)
         {
-            foreach (Book book in books)
-            {
+            foreach (var book in books)
                 Console.WriteLine(book.ToString());
-            }
         }
-
-        //check the existence of a book and a student in its list.
-        private bool IsBookExistend(int checkId)
+        
+        public List<Book> SearchBooksByTitle()
         {
-            Book bookInlist = Books.FirstOrDefault(b => b.BoookId == checkId);
-            if (bookInlist == null)
+            Console.WriteLine("Enter book title to be looked up.");
+            var searchKeyWord = Console.ReadLine();
+            return Books.Where(b => b.Title.ToLower().Contains(searchKeyWord.ToLower())).ToList();
+        }
+        
+        private Book FindBookById()
+        {
+            Console.Write("Enter book ID: ");
+            var bookId = int.Parse(Console.ReadLine());
+            var bookInList = Books.FirstOrDefault(b => b.BookId == bookId);
+            while (bookId < 0 || bookInList == null || bookInList.Quantity == 0)
+            {
+                Console.WriteLine("This book does not exist or out of stock, please enter another book ID.");
+                bookId = int.Parse(Console.ReadLine());
+                bookInList = Books.FirstOrDefault(b => b.BookId == bookId);
+            }
+
+            return bookInList;
+        }
+        
+        private bool IsBookExisted(int idToCheck)
+        {
+            var bookInList = Books.FirstOrDefault(b => b.BookId == idToCheck);
+            if (bookInList == null)
                 return false;
             return true;
         }
-
-        private bool IsStudentExistend(string checkId)
+        
+        private bool IsStudentExisted(string idToCheck)
         {
-            Student studentInList = StudentsBorrows.FirstOrDefault
-                (b => b.StudentId.Equals(checkId));
+            var studentInList = StudentBorrowers.FirstOrDefault(b => b.StudentId.Equals(idToCheck));
             if (studentInList == null)
                 return false;
             return true;
         }
 
-        //update or delete information of book
         private void UpdateBook(Book bookToUpdate)
         {
-            bookToUpdate.InputInformation();
-            Console.WriteLine("Update successfully");
+            bookToUpdate.InputInfo();
+            Console.WriteLine("Updated successfully!");
+            Console.WriteLine("---------------------------");
         }
-
+        
         private void DeleteBook(Book bookToDelete)
         {
             Books.Remove(bookToDelete);
-            Console.WriteLine("Delete successfully");
+            Console.WriteLine("Deleted successfully!");
+            Console.WriteLine("---------------------------");
         }
+        
+        public void UpdateOrDeleteBook()
+        {
+            ShowBookList();
+            Console.Write("Enter a book ID: ");
+            var bookId = int.Parse(Console.ReadLine());
+            while (!IsBookExisted(bookId))
+            {
+                Console.WriteLine("This book does not exist, please enter another ID.");
+                bookId = int.Parse(Console.ReadLine());
+            }
+
+            var bookInList = Books.FirstOrDefault(b => b.BookId == bookId);
+            Console.WriteLine(bookInList.ToString());
+            Console.WriteLine("Type 'u' for update, 'd' for delete.");
+            var choice = Console.ReadLine();
+            while (!choice.Equals("u", StringComparison.InvariantCultureIgnoreCase)
+                   && !choice.Equals("d", StringComparison.InvariantCultureIgnoreCase))
+            {
+                Console.WriteLine("Invalid command, please enter again.");
+                choice = Console.ReadLine();
+            }
+
+            if (choice.Equals("u", StringComparison.InvariantCultureIgnoreCase))
+                UpdateBook(bookInList);
+            else DeleteBook(bookInList);
+        }
+        
     }
 }

@@ -4,40 +4,38 @@ namespace BookAsM2
 {
     public class Book
     {
-        public int BoookId { get; set; }
-        public string Name { get; set; }
+        public int BookId { get; set; }
+        public string Title { get; set; }
         public string Author { get; set; }
         public string Category { get; set; }
         public int Quantity { get; set; }
 
-        public void InputInformation()
+        public void InputInfo()
         {
-            Console.WriteLine("Enter information");
-            Console.Write("Name");
-            Name = Console.ReadLine();
-            Console.WriteLine("Name Author");
+            Console.WriteLine("Enter book information.");
+            Console.Write("Book title: ");
+            Title = Console.ReadLine();
+            Console.Write("Author name: ");
             Author = Console.ReadLine();
-            Console.WriteLine("Category");
+            Console.Write("Category name: ");
             Category = Console.ReadLine();
-            Console.WriteLine("Quantity");
+            Console.Write("Quantity: ");
             Quantity = int.Parse(Console.ReadLine());
             while (Quantity < 0)
             {
-                Console.WriteLine("Quantity must be greater than 0");
+                Console.WriteLine("Invalid quantity value, please enter another.");
                 Quantity = int.Parse(Console.ReadLine());
             }
         }
 
         public override string ToString()
         {
-            return $"BookId : {BoookId}, Name: {Name}," +
-                   $" Author: {Author}, Category: {Category}, Quantity: {Quantity}";
+            return $"Book ID: {BookId}, Title: {Title}, Author: {Author}, Category: {Category}, Quantity: {Quantity}";
         }
 
-        public void ShowBookBorrow()
+        public void ShowBookOnLoan()
         {
-            Console.WriteLine($"Book : Id {BoookId}, Name: {Name}" +
-                              $", Author: {Author}, Category: {Category}");
+            Console.WriteLine($"Book on loan: ID {BookId}, Title: {Title}, Author, {Author}, Category: {Category}");
         }
     }
 }

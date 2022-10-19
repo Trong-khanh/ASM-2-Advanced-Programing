@@ -40,7 +40,7 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Book.cs"/>
-        <Compile Include="Borrowbooks.cs"/>
+        <Compile Include="BookBorrow.cs"/>
         <Compile Include="Library.cs"/>
         <Compile Include="Person.cs"/>
         <Compile Include="Program.cs"/>
