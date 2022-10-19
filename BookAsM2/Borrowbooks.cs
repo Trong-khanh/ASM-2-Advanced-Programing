@@ -22,6 +22,7 @@ namespace BookAsM2
         public DateTime DueDate { get; set; }
         public DateTime ReturnDateTime { get; set; }
 
+        //method which is used to input the issue date and calculate the due date of a book borrowing.
         public void InputIssueDate()
         {
             IssueDate = DateTime.Now;
@@ -30,6 +31,7 @@ namespace BookAsM2
             DueDate = IssueDate.AddDays(duration);
         }
 
+        //method which is used to input the return date of a book borrowing.
         public void InputTheReturnDate()
         {
             Console.WriteLine(" Enter the return date: ");
@@ -46,6 +48,7 @@ namespace BookAsM2
             }
         }
 
+        //This is the two methods which are used to show the time line and the status of borrowing and returning a book
         public override string ToString()
         {
             return $"BorrowID: {BorrowId},IssueDate: {IssueDate.ToString("dd/MM/yyyy")}," +

@@ -5,7 +5,7 @@ namespace BookAsM2
     public class Book
     {
         public int BoookId { get; set; }
-        public string Title { get; set; }
+        public string Name { get; set; }
         public string Author { get; set; }
         public string Category { get; set; }
         public int Quantity { get; set; }
@@ -13,8 +13,8 @@ namespace BookAsM2
         public void InputInformation()
         {
             Console.WriteLine("Enter information");
-            Console.Write("Title");
-            Title = Console.ReadLine();
+            Console.Write("Name");
+            Name = Console.ReadLine();
             Console.WriteLine("Name Author");
             Author = Console.ReadLine();
             Console.WriteLine("Category");
@@ -30,13 +30,13 @@ namespace BookAsM2
 
         public override string ToString()
         {
-            return $"BookId : {BoookId}, Title: {Title}," +
+            return $"BookId : {BoookId}, Name: {Name}," +
                    $" Author: {Author}, Category: {Category}, Quantity: {Quantity}";
         }
 
         public void ShowBookBorrow()
         {
-            Console.WriteLine($"Book : Id {BoookId}, Title: {Title}" +
+            Console.WriteLine($"Book : Id {BoookId}, Name: {Name}" +
                               $", Author: {Author}, Category: {Category}");
         }
     }
