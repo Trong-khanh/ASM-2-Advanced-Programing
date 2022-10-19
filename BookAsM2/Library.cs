@@ -1,15 +1,21 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BookAsM2
 {
     public class Library
     {
-        public string LibraryName { get; set; }
         public List<Book> Books = new List<Book>();
-        public List<Student> Students = new List<Student>();
         public List<Borrowbooks> BorrowbooksList = new List<Borrowbooks>();
-        public Library(string libraryName) => LibraryName = libraryName;
+        public List<Student> Students = new List<Student>();
+
+        public Library(string libraryName)
+        {
+            LibraryName = libraryName;
+        }
+
+        public string LibraryName { get; set; }
 
         //display menus of library.
         public void ShowMenu()
@@ -25,6 +31,28 @@ namespace BookAsM2
             Console.WriteLine("9. Find student who borrows books the most often ");
             Console.WriteLine("10. exit the program ");
             Console.WriteLine("Enter your choose");
+        }
+
+        public void addBook()
+        {
+            try
+            {
+                var newBook = new Book();
+                if (Books.Any())
+                    newBook.BoookId = Books.Last().BoookId + 1;
+                else newBook.BoookId = 1;
+                newBook.InputInformation();
+                Books.Add(newBook);
+                Console.WriteLine("Add successfully!!");
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Please enter number .\n" + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error" + ex.Message);
+            }
         }
     }
 }
