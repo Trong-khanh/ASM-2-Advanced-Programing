@@ -33,7 +33,7 @@ namespace BookAsM2
             return $"Book ID: {BookId}, Title: {Title}, Author: {Author}, Category: {Category}, Quantity: {Quantity}";
         }
 
-        public void ShowBookOnLoan()
+        public void ShowBookOnBorrow()
         {
             Console.WriteLine($"Book on loan: ID {BookId}, Title: {Title}, Author, {Author}, Category: {Category}");
         }

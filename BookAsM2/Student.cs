@@ -6,7 +6,17 @@ namespace BookAsM2
 {
     public class Student : Person
     {
-        public List<BookBorrow> BookLoans = new List<BookBorrow>();
+        public List<BookBorrow> BookBorrows = new List<BookBorrow>();
+
+        public Student(string studentId)
+        {
+            StudentId = studentId;
+        }
+
+        public Student()
+        {
+        }
+
         public string StudentId { get; set; }
 
         public override void InputInfo()
@@ -19,7 +29,7 @@ namespace BookAsM2
             PhoneNumber = Console.ReadLine();
             while (PhoneNumber.Any(char.IsLetter))
             {
-                Console.WriteLine("Invalid phone number, please enter again.");
+                Console.WriteLine("Invalid phone number, please enter another.");
                 PhoneNumber = Console.ReadLine();
             }
 
@@ -27,9 +37,15 @@ namespace BookAsM2
             EmailAddress = Console.ReadLine();
             while (!EmailAddress.Contains("@"))
             {
-                Console.WriteLine("Invalid email address, please enter again .");
+                Console.WriteLine("Invalid email address, please enter another.");
                 EmailAddress = Console.ReadLine();
             }
+        }
+
+        public override string ToString()
+        {
+            return
+                $"Student ID: {StudentId}, Name: {FirstName} {LastName}, Phone: {PhoneNumber}, Email: {EmailAddress}";
         }
     }
 }

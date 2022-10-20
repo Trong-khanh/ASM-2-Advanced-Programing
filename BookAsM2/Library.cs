@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 
 namespace BookAsM2
 {
     public class Library
     {
-        public List<BookBorrow> BookLoans = new List<BookBorrow>();
+        public List<BookBorrow> BookBorrows = new List<BookBorrow>();
         public List<Book> Books = new List<Book>();
         public List<Student> StudentBorrowers = new List<Student>();
 
@@ -83,14 +84,14 @@ namespace BookAsM2
             foreach (var book in books)
                 Console.WriteLine(book.ToString());
         }
-        
+
         public List<Book> SearchBooksByTitle()
         {
             Console.WriteLine("Enter book title to be looked up.");
             var searchKeyWord = Console.ReadLine();
             return Books.Where(b => b.Title.ToLower().Contains(searchKeyWord.ToLower())).ToList();
         }
-        
+
         private Book FindBookById()
         {
             Console.Write("Enter book ID: ");
@@ -105,19 +106,19 @@ namespace BookAsM2
 
             return bookInList;
         }
-        
+
         private bool IsBookExisted(int idToCheck)
-        {
-            var studentInList = StudentBorrowers.FirstOrDefault(b => b.StudentId.Equals(idToCheck));
-            if (studentInList == null)
-                return false;
-            return true;
-        }
-        
-        private bool IsStudentExisted(int idToCheck)
         {
             var bookInList = Books.FirstOrDefault(b => b.BookId == idToCheck);
             if (bookInList == null)
+                return false;
+            return true;
+        }
+
+        private bool IsStudentExisted(string idToCheck)
+        {
+            var studentInList = StudentBorrowers.FirstOrDefault(b => b.StudentId.Equals(idToCheck));
+            if (studentInList == null)
                 return false;
             return true;
         }
@@ -128,14 +129,14 @@ namespace BookAsM2
             Console.WriteLine("Updated successfully!");
             Console.WriteLine("---------------------------");
         }
-        
+
         private void DeleteBook(Book bookToDelete)
         {
             Books.Remove(bookToDelete);
             Console.WriteLine("Deleted successfully!");
             Console.WriteLine("---------------------------");
         }
-        
+
         public void UpdateOrDeleteBook()
         {
             ShowBookList();
@@ -162,6 +163,84 @@ namespace BookAsM2
                 UpdateBook(bookInList);
             else DeleteBook(bookInList);
         }
-        
+
+        public void LendBook()
+        {
+            if (!Books.Any())
+            {
+                Console.WriteLine("Currently there are no books to be lent to students");
+            }
+            else
+            {
+                Console.WriteLine("Enter information student");
+                Console.WriteLine("Student Id: ");
+                var studentId = Console.ReadLine();
+                if (IsStudentExisted(studentId))
+                {
+                    Console.WriteLine("Data about this student is already available: ");
+                    var studentInList = StudentBorrowers.FirstOrDefault(b => b.StudentId.Equals(studentId));
+                    Console.WriteLine(studentInList.ToString());
+                    if (studentInList.BookBorrows.Last().ReturnDate == DateTime.MinValue)
+                    {
+                        Console.WriteLine("This student has 1 unreturned book which has to be returned before" +
+                                          $"{studentInList.BookBorrows.Last().DueDate.AddDays(1).ToString("dd/MM/yyyy")}");
+                        studentInList.BookBorrows.Last().BookInBorrow.ShowBookOnBorrow();
+                    }
+                    else
+                    {
+                        try
+                        {
+                            var borrowBook = FindBookById();
+                            Console.WriteLine(borrowBook.ToString());
+                            borrowBook.Quantity--;
+                            var newBookBorrow = new BookBorrow(studentInList, borrowBook);
+                            newBookBorrow.BorrowId = BookBorrows.Last().BorrowId + 1;
+                            newBookBorrow.InputIssueDate(studentInList);
+                            BookBorrows.Add(newBookBorrow);
+                            studentInList.BookBorrows.Add(newBookBorrow);
+                            Console.WriteLine("The book has been successfully lent.");
+                        }
+                        catch (FormatException ex)
+                        {
+                            Console.WriteLine(" please enter a number.\n" + ex.Message);
+                        }
+                    }
+                }
+                else
+                {
+                    var newStudent = new Student(studentId);
+                    newStudent.InputInfo();
+                    try
+                    {
+                        StudentBorrowers.Add(newStudent);
+                        var borrowBook = FindBookById();
+                        Console.WriteLine(borrowBook.ToString());
+                        borrowBook.Quantity--;
+                        var newBorrowBook = new BookBorrow(newStudent, borrowBook);
+                        if (BookBorrows.Any())
+                            newBorrowBook.BorrowId = BookBorrows.Last().BorrowId + 1;
+                        else newBorrowBook.BorrowId = 1;
+                        newBorrowBook.InputIssueDate(newStudent);
+                        BookBorrows.Add(newBorrowBook);
+                        newStudent.BookBorrows.Add(newBorrowBook);
+                        Console.WriteLine("The book has been successfully lent.");
+                    }
+                    catch (FormatException ex)
+                    {
+                        Console.WriteLine("Please enter a number.\n" + ex.Message);
+                        StudentBorrowers.Remove(newStudent);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error " + ex.Message);
+                    }
+                }
+            }
+        }
+
+        public void ReceiveBook()
+        {
+            
+        }
     }
 }

@@ -29,8 +29,8 @@ namespace BookAsM2
             Console.Write("Enter issue date (dd/MM/yyyy): ");
             var dateInput = Console.ReadLine().Split('/');
             IssueDate = new DateTime(int.Parse(dateInput[2]), int.Parse(dateInput[1]), int.Parse(dateInput[0]));
-            if (student.BookLoans.Any())
-                while (IssueDate < student.BookLoans.Last().ReturnDate)
+            if (student.BookBorrows.Any())
+                while (IssueDate < student.BookBorrows.Last().ReturnDate)
                 {
                     Console.Write(
                         "Issue date must not conflict with other previous borrowing time.\nPlease enter again: ");

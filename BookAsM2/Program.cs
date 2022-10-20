@@ -61,6 +61,7 @@ namespace BookAsM2
                 option = Console.ReadLine();
             } while (true);
         }
-        }
     }
+}
+
 }
