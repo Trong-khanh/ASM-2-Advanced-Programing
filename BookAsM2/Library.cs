@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace BookAsM2
 {
@@ -240,7 +240,38 @@ namespace BookAsM2
 
         public void ReceiveBook()
         {
-            
+            Console.WriteLine("Enter student information: ");
+            Console.WriteLine("Student ID");
+            var studentId = Console.ReadLine();
+            var studentInList = StudentBorrowers.FirstOrDefault(b => b.StudentId.Equals(studentId));
+            while (studentInList == null || studentInList.BookBorrows.Last().ReturnDate != DateTime.MinValue)
+            {
+                Console.Write(" This student has returned or not borrowed a book before.\n please enter other ID:");
+                studentId = Console.ReadLine();
+                studentInList = StudentBorrowers.FirstOrDefault(b => b.StudentId == studentId);
+            }
+
+            Console.WriteLine("This student has 1 unreturned book.");
+            studentInList.BookBorrows.Last().ShowTimeLine();
+            Console.WriteLine(studentInList.ToString());
+            studentInList.BookBorrows.Last().InputReturnDate();
+            studentInList.BookBorrows.Last().BookInBorrow.Quantity++;
+
+            foreach (var br in BookBorrows)
+                if (br.BorrowId == studentInList.BookBorrows.Last().BorrowId)
+                {
+                    br.ReturnDate = studentInList.BookBorrows.Last().ReturnDate;
+                    br.BookInBorrow.Quantity = studentInList.BookBorrows.Last().BookInBorrow.Quantity;
+                }
+
+            foreach (var b in Books)
+                if (b.BookId == studentInList.BookBorrows.Last().BorrowId)
+                    b.Quantity = studentInList.BookBorrows.Last().BookInBorrow.Quantity;
+            if (studentInList.BookBorrows.Last().ReturnDate > studentInList.BookBorrows.Last().DueDate)
+                Console.WriteLine("This student has returned the book after the due date " +
+                                  $"({studentInList.BookBorrows.Last().DueDate.ToString("dd/MM/yyyy")}).\n" +
+                                  "The amount of the fine to be paid is 10000VND.");
+            else Console.WriteLine("This student has returned the book on time.");
         }
     }
 }
