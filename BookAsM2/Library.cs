@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace BookAsM2
 {
@@ -272,6 +271,59 @@ namespace BookAsM2
                                   $"({studentInList.BookBorrows.Last().DueDate.ToString("dd/MM/yyyy")}).\n" +
                                   "The amount of the fine to be paid is 10000VND.");
             else Console.WriteLine("This student has returned the book on time.");
+        }
+
+        public void UpdateStudent()
+        {
+            Console.WriteLine("Enter student ID:");
+            var studentId = Console.ReadLine();
+            while (!IsStudentExisted(studentId))
+            {
+                Console.WriteLine("This student does not exist, please enter other ID.");
+                studentId = Console.ReadLine();
+            }
+
+            var studentInList = StudentBorrowers.FirstOrDefault(b => b.StudentId.Equals(studentId));
+            Console.WriteLine(studentInList.ToString());
+            studentInList.InputInfo();
+            Console.WriteLine("Update successfully");
+        }
+
+        public void ShowBookLoanList()
+        {
+            if (!BookBorrows.Any())
+            {
+                Console.WriteLine("No one has ever borrowed a book here");
+            }
+            else
+            {
+                Console.WriteLine("Information books borrowing");
+                foreach (var br in BookBorrows)
+                {
+                    br.ShowTimeLine();
+                    Console.WriteLine(br.StudentBorrower.ToString());
+                    br.BookInBorrow.ShowBookOnBorrow();
+                }
+            }
+        }
+
+        public void FindMostFrequentBorrower()
+        {
+            if (!StudentBorrowers.Any())
+            {
+                Console.WriteLine("No one has evere borrowed a book here.");
+            }
+            else
+            {
+                var maxBookBorrow = 1;
+                foreach (var s in StudentBorrowers)
+                    if (s.BookBorrows.Count >= maxBookBorrow)
+                        maxBookBorrow = s.BookBorrows.Count;
+                Console.WriteLine("The student (s) who borrow(s) books the most often is/are");
+                foreach (var s in StudentBorrowers)
+                    if (s.BookBorrows.Count == maxBookBorrow)
+                        Console.WriteLine(s.ToString());
+            }
         }
     }
 }
